@@ -6,14 +6,19 @@
 ### 環境
 
 - python3.10（>=3.10,<4）
+- FastAPI
 - poetry
   - `flocky-gcp` パッケージとして作成
   - `vertualenv` は使用しない
-- Cloud Functions
-  - サービスアカウント: `chat-flocky-sa@flocky-449707.iam.gserviceaccount.com`
+- GCP
+  - プロジェクト: flocky-449707
+  - Cloud Run
+  - Artifact Registry
+    - Docker イメージ名: us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/chat-flocky:latest
+  - （あとで設定）サービスアカウント: `chat-flocky-sa@flocky-449707.iam.gserviceaccount.com`
     - role
       - roles/iam.serviceAccountUser
-      - roles/cloudfunctions.developer
+      - （あとで削除）roles/cloudfunctions.developer
 
 ### python ライブラリのインストール
 
@@ -35,6 +40,20 @@ docker compose up
 
 ### デプロイ
 
+1. Docker イメージのビルド
+
 ```bash
-gcloud functions deploy helloWorld --entry-point=hello_world --runtime=python310 --trigger-http --source=src/flocky_gcp --service-account=chat-flocky-sa@flocky-449707.iam.gserviceaccount.com --allow-unauthenticated
+$ docker build -t us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/chat-flocky:latest .
+```
+
+2. Artifact Registry へ push
+
+```bash
+$ docker push us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/chat-flocky:latest
+```
+
+3. Cloud Run にデプロイ
+
+```bash
+$ gcloud run deploy --image us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/chat-flocky:latest --platform=managed  --project=flocky-449707
 ```
