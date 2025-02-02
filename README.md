@@ -10,6 +10,10 @@
   - `flocky-gcp` パッケージとして作成
   - `vertualenv` は使用しない
 - Cloud Functions
+  - サービスアカウント: `chat-flocky-sa@flocky-449707.iam.gserviceaccount.com`
+    - role
+      - roles/iam.serviceAccountUser
+      - roles/cloudfunctions.developer
 
 ### python ライブラリのインストール
 
@@ -32,10 +36,5 @@ docker compose up
 ### デプロイ
 
 ```bash
-gcloud functions deploy helloWorld \
-  --entry-point=hello_world \
-  --runtime=python311 \
-  --trigger-http \
-  --source=src/flocky_gcp/main.py \
-  --allow-unauthenticated
+gcloud functions deploy helloWorld --entry-point=hello_world --runtime=python310 --trigger-http --source=src/flocky_gcp --service-account=chat-flocky-sa@flocky-449707.iam.gserviceaccount.com --allow-unauthenticated
 ```
