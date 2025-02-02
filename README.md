@@ -1,7 +1,6 @@
 # flocy-gcp
 
-フロッキーの GCP 版。
-たぶん Cloud Functions を使います。
+家族用 LINE チャットボット、フロッキーの GCP 版。
 
 ### 環境
 
