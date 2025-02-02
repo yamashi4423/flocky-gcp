@@ -57,3 +57,9 @@ $ docker push us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/c
 ```bash
 $ gcloud run deploy --image us-central1-docker.pkg.dev/flocky-449707/cloud-run-source-deploy/chat-flocky:latest --platform=managed  --project=flocky-449707
 ```
+
+4. 環境変数の設定
+
+- LINE_CHANNEL_ACCESS_TOKEN
+- LINE_CHANNEL_SECRET
+- OPENAI_API_KEY

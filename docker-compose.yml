@@ -8,3 +8,6 @@ services:
     volumes:
       - ./:/app
     tty: true
+    # dot_envで設定するとビルドに含まれてしまうので、環境変数の意味ない
+    env_file:
+      - .env
