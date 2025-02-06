@@ -1,0 +1,24 @@
+[project]
+name = "flocky-gcp"
+version = "0.1.0"
+description = "Flocky is a line chat app for only my family."
+authors = [
+    {name = "yamashi4423",email = "yamashi4423@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "flask (>=3.1.0,<4.0.0)",
+    "functions-framework (>=3.8.2,<4.0.0)",
+    "watchdog (>=6.0.0,<7.0.0)",
+    "fastapi (>=0.115.8,<0.116.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "line-bot-sdk (>=3.14.5,<4.0.0)",
+    "openai (>=1.61.0,<2.0.0)",
+    "python-dotenv (>=1.0.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
