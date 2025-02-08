@@ -37,6 +37,20 @@ docker compose up
 
 2. http://localhost:8080/ にアクセス
 
+3. ngrok を立ち上げ
+
+```bash
+ngrok http 8080
+```
+
+少し時間が経つと、以下のログが出力される。
+
+```bash
+Forwarding                    https://xxxx.ngrok.io -> http://localhost:5000
+```
+
+4. https://xxxx.ngrok.io/webhook を [Line Dev](https://developers.line.biz/console/channel/1657676284/messaging-api) の Webhook に貼り付け。これでローカルからチャットすることが可能。
+
 ### デプロイ
 
 1. Docker イメージのビルド
