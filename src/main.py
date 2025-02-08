@@ -5,6 +5,7 @@ from linebot import LineBotApi, WebhookParser, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 import logging
+from utils import hello_world
 
 
 # 環境変数からキーを取得
