@@ -5,7 +5,7 @@ from linebot import LineBotApi, WebhookParser, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
 import logging
-from utils import hello_world
+from utils import hello_world, response_text_from_llm
 
 
 # 環境変数からキーを取得
@@ -54,12 +54,7 @@ def handle_message(event):
     # DMの場合
     if event.source.type == "user":
         user_message = event.message.text
-
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[{"role": "user", "content": user_message}]
-        )
-        reply_text = response.choices[0].message.content.strip()
+        reply_text = response_text_from_llm(user_message, client, MODEL_NAME)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
 
     # グループ or 複数人トークの場合
@@ -69,10 +64,6 @@ def handle_message(event):
 
         for mention in mentionees:
             if mention.user_id == BOT_USER_ID:
-                response = client.chat.completions.create(
-                    model=MODEL_NAME,
-                    messages=[{"role": "user", "content": user_message}]
-                )
-                reply_text = response.choices[0].message.content.strip()
+                reply_text = response_text_from_llm(user_message, client, MODEL_NAME)
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
                 return
