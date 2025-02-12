@@ -1,5 +1,5 @@
 [project]
-name = "flocky-gcp"
+name = "src"
 version = "0.1.0"
 description = "Flocky is a line chat app for only my family."
 authors = [

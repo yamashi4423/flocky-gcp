@@ -32,5 +32,5 @@ RUN poetry install
 
 # Cloud Functions の実行環境をエミュレート（ホットリロードしたいので、flaskアプリとして起動）
 # CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0", "--port=8080", "--reload"]
-CMD ["uvicorn", "src.flocky_gcp.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]
 # CMD ["functions-framework --target hello_world --source src/flocky_gcp/main.py --port 5000"]
