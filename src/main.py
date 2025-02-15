@@ -1,12 +1,14 @@
 import os
-import openai
+import logging
+
 from fastapi import FastAPI, Request
 from linebot import LineBotApi, WebhookParser, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from linebot.exceptions import InvalidSignatureError
-import logging
-from utils import response_text_from_llm
+from langchain.chat_models import ChatOpenAI
 
+from llm import response_text_from_llm
+import consts.config as config
 
 # 環境変数からキーを取得
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
@@ -25,9 +27,8 @@ parser = WebhookParser(LINE_CHANNEL_SECRET)
 bot_profile = line_bot_api.get_bot_info()
 BOT_USER_ID = bot_profile.user_id
 
-# OPENAI
-MODEL_NAME = "gpt-4o"
-client = openai.OpenAI(api_key=OPENAI_API_KEY)
+# LangChain
+llm = ChatOpenAI(model_name=config.MODEL_NAME, openai_api_key=OPENAI_API_KEY)
 
 # Webアプリ立ち上げ
 app = FastAPI()
@@ -54,7 +55,7 @@ def handle_message(event):
     # DMの場合
     if event.source.type == "user":
         user_message = event.message.text
-        reply_text = response_text_from_llm(user_message, client, MODEL_NAME)
+        reply_text = response_text_from_llm(user_message, llm)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
 
     # グループ or 複数人トークの場合
@@ -64,6 +65,6 @@ def handle_message(event):
 
         for mention in mentionees:
             if mention.user_id == BOT_USER_ID:
-                reply_text = response_text_from_llm(user_message, client, MODEL_NAME)
+                reply_text = response_text_from_llm(user_message, llm)
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
                 return
